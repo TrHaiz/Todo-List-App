@@ -1,15 +1,20 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class MyHomePage extends StatefulWidget {
+import 'themeProvider.dart';
+
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
 List<String>l=[];
+
   TextEditingController textEdit=TextEditingController();
 
      void showAdd(BuildContext context)
@@ -156,6 +161,7 @@ Future<void>saveTask() async {
     prefs.setStringList('task', l);
 }
 
+
   @override
 
 void initState()
@@ -167,8 +173,8 @@ void initState()
 @override 
 
   Widget build(BuildContext context) {
+    final curretTheme=ref.watch(themeNotifierProvider);
     return Scaffold(
-        backgroundColor: Colors.white,
         floatingActionButton: Container(
           width: 60,
           height: 60,
@@ -178,13 +184,17 @@ void initState()
           
       appBar:  AppBar(
         centerTitle: true,
-       backgroundColor: Colors.black87,
         title: 
-            (Text("Todo App",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
+            (Text("Todo App",style: TextStyle(fontWeight: FontWeight.bold)
+                  )),
+                leading: IconButton(
+                  onPressed: (){ref.read(themeNotifierProvider.notifier).ToggleTheme();}, 
+                  icon: curretTheme==ThemeMode.light 
+                  ? Icon(Icons.sunny) : Icon(CupertinoIcons.moon) 
                   ),
         actions: [
           IconButton(onPressed: (){(showFind());}, 
-          icon: Icon(Icons.search, size: 35, color: Colors.white,)),
+          icon: Icon(Icons.search, size: 35,)),
           SizedBox(width: 10,),
         ],
       ),
@@ -197,14 +207,8 @@ void initState()
                   return ListTile(
                     leading: Icon(Icons.circle, color: Colors.greenAccent,),
                     title: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.black87),
                       onPressed: (){showTask(cur, index);}, 
-                      child:Text(
-                          cur, 
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold, 
-                            color: Colors.white),
-                              ) 
+                      child:Text(cur) 
                       ),
                     
                   );
