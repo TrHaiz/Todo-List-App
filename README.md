@@ -20,7 +20,8 @@ A simple and lightweight Flutter application that helps users take notes and man
 
 * `main.dart`: The main entry point of the application.
 * `homepage.dart`: Contains the main UI of the app and handles the core logic (Add, Delete, Search, and Storage).
-
+* `themeProvider`: Manages the Light/Dark mode state of the entire application using Riverpod, with local persistence via shared_preferences
+  
 ## 💻 Installation & Usage Guide
 
 Follow these steps to run the application on your local machine:
